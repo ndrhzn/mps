@@ -48,7 +48,7 @@ ggplot(df)+
   geom_text(data = median_text, aes(x = x, y = y, label = label), 
             angle = 90, nudge_x = -0.5,
             family = 'Ubuntu Mono', size = 4, color = '#5D646F', hjust = 'center')+
-  scale_color_brewer(palette = 7, type = 'qual', direction = 1)+
+  scale_color_brewer(palette = 7, type = 'qual', direction = 1, labels = c('чоловіки', 'жінки'))+
   scale_x_continuous(breaks = seq(1920, 1990, 5))+
   scale_y_continuous(breaks = c(1, seq(5, 30, 5)), limits = c(1, 30), expand = c(0.01, 0.01))+
   labs(
@@ -56,9 +56,14 @@ ggplot(df)+
     subtitle = 'Розподіл депутатів Верховної Ради восьмого скликання за роком народження та статтю',
     caption = 'Дані: Верховна Рада України | Візуалізація: Textura.in.ua'
   )+
-  theme_minimal(base_family = 'Ubuntu Mono', base_size = 12)+
+  theme_minimal(base_family = 'Ubuntu Mono')+
   theme(
-    legend.position = 'none',
+    legend.position = 'top',
+    legend.justification = 'left',
+    legend.title = element_blank(),
+    legend.text = element_text(size = 13),
+    legend.spacing.x = unit(5, 'pt'),
+    legend.margin = margin(l = -7),
     text = element_text(color = '#5D646F'),
     axis.title = element_blank(),
     axis.text = element_text(size = 13),
