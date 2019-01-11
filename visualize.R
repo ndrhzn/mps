@@ -53,7 +53,7 @@ ggplot(df)+
   scale_y_continuous(breaks = c(1, seq(5, 30, 5)), limits = c(1, 30), expand = c(0.01, 0.01))+
   labs(
     title = 'Клуб старих чоловіків',
-    subtitle = 'Розподіл депутатів ВР за роком народження та статтю',
+    subtitle = 'Розподіл депутатів Верховної Ради восьмого скликання за роком народження та статтю',
     caption = 'Дані: Верховна Рада України | Візуалізація: Textura.in.ua'
   )+
   theme_minimal(base_family = 'Ubuntu Mono', base_size = 12)+
@@ -67,7 +67,7 @@ ggplot(df)+
     panel.grid.major = element_line(linetype = 'dotted', color = '#5D646F', size = 0.1),
     panel.grid.minor = element_blank(),
     panel.grid.major.x = element_blank(),
-    plot.title = element_text(size = 36, face = 'bold'),
+    plot.title = element_text(size = 36, face = 'bold', margin = margin(b = 10)),
     plot.subtitle = element_text(size = 18, margin = margin(b = 10)),
     plot.caption = element_text(size = 12, margin = margin(t = 20)),
     plot.background = element_rect(fill = '#F3F7F7'),
