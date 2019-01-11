@@ -20,7 +20,9 @@ segment <- data.frame(
 
 annotation <- df %>% 
   filter(year %in% c(max(year), min(year))) %>% 
-  mutate(name = paste(first_name, last_name))
+  mutate(name = paste(first_name, last_name)) %>% 
+  group_by(year) %>% 
+  summarise(name = paste(name, collapse = '\n'))
 
 median_text <- data.frame(
   x = df$year %>% median(),
@@ -28,7 +30,6 @@ median_text <- data.frame(
   label = 'медіана'
 )
   
-
 png(filename = 'years.png', width = 1000, height = 600)
 
 ggplot(df)+
@@ -67,10 +68,12 @@ ggplot(df)+
     panel.grid.minor = element_blank(),
     panel.grid.major.x = element_blank(),
     plot.title = element_text(size = 36, face = 'bold'),
-    plot.subtitle = element_text(size = 18),
+    plot.subtitle = element_text(size = 18, margin = margin(b = 10)),
     plot.caption = element_text(size = 12, margin = margin(t = 20)),
     plot.background = element_rect(fill = '#F3F7F7'),
-    plot.margin = unit(c(1, 1.5, 1, 1.5), 'cm')
+    plot.margin = unit(c(1.5, 1.5, 1.5, 1.5), 'cm')
   )
 
 dev.off()
+
+rm(df, annotation, segment, median_text, parse_data)
