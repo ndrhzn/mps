@@ -52,7 +52,7 @@ ggplot(df)+
   scale_x_continuous(breaks = seq(1920, 1990, 5))+
   scale_y_continuous(breaks = c(1, seq(5, 30, 5)), limits = c(1, 30), expand = c(0.01, 0.01))+
   labs(
-    title = 'Клуб старих чоловіків',
+    title = 'Клуб немолодих чоловіків',
     subtitle = 'Розподіл депутатів Верховної Ради восьмого скликання за роком народження та статтю',
     caption = 'Дані: Верховна Рада України | Візуалізація: Textura.in.ua'
   )+
