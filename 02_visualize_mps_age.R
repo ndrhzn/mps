@@ -1,13 +1,13 @@
 library(ggplot2)
 library(dplyr)
 
-source('parse_data.R')
+source('01_parse_data.R')
 
 df <- parse_data() %>% 
   filter(convocation == max(convocation)) %>% 
   select(-id, -birthday) %>% 
-  arrange(year, gender) %>% 
-  group_by(year, gender) %>% 
+  arrange(convocation, year, -gender) %>% 
+  group_by(convocation, year) %>% 
   mutate(label = row_number()) %>% 
   ungroup()
 
@@ -46,11 +46,11 @@ ggplot(df)+
             aes(x = year, y = 13.5, label = paste(name, collapse = '\n')),
             family = 'Ubuntu Mono', size = 4, color = '#5D646F', hjust = 'right')+
   geom_text(data = median_text, aes(x = x, y = y, label = label), 
-            angle = 90, nudge_x = -0.5,
+            angle = 90, nudge_x = -1,
             family = 'Ubuntu Mono', size = 4, color = '#5D646F', hjust = 'center')+
   scale_color_brewer(palette = 7, type = 'qual', direction = 1, labels = c('чоловіки', 'жінки'))+
   scale_x_continuous(breaks = seq(1920, 1990, 5))+
-  scale_y_continuous(breaks = c(1, seq(5, 30, 5)), limits = c(1, 30), expand = c(0.01, 0.01))+
+  scale_y_continuous(breaks = c(0, seq(5, 30, 5)), limits = c(0, 30), expand = c(0.01, 0.01))+
   labs(
     title = 'Клуб немолодих чоловіків',
     subtitle = 'Розподіл депутатів Верховної Ради восьмого скликання за роком народження та статтю',
