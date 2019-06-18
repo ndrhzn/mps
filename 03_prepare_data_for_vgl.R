@@ -16,6 +16,8 @@ df <- parse_data() %>%
   arrange(convocation, year, -gender) %>% 
   group_by(convocation, year) %>% 
   mutate(label = row_number()) %>% 
-  inner_join(convocations)
+  inner_join(convocations) %>% 
+  mutate(start = stringr::str_extract(years, '\\d{4}'),
+         age_at_start = as.numeric(start) - year)
 
 write.csv(df, 'mps.csv', row.names = F)
