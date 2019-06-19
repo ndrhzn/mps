@@ -17,30 +17,65 @@ df_agg <- df %>%
   arrange(convocation, counter) %>% 
   inner_join(convocations)
 
+df_percentage <- df_agg %>% 
+  group_by(convocation) %>% 
+  mutate(mps_n = sum(count)) %>% 
+  filter(counter == 1) %>% 
+  mutate(percentage = round(count/mps_n * 100, digits = 0))
+
 annotations <- data.frame(
   x = 5.5,
-  y = 60,
-  text = 'text'
+  y = 63.5,
+  text = c('Перше скликання ВР - є першим для всіх депутатів. Ми не враховуємо того факту, що деякі з них могли бути депутатами за часів УРСР',
+           '63 людини з першого скликання ВР були обрані депутатами другого скликання',
+           'Майже три чверті депутатів шостого скликання були в попередніх скликаннях ВР',
+           'Юхим Звягільский - єдиний, хто був депутатом всіх восьми скликань ВР'),
+  years = c('1990-1994', '1994-1998', '2007-2012', '2014-2019')
+)
+
+percentage <- data.frame(
+  x = 5.5,
+  y = - 2,
+  years = df_percentage$years,
+  text = df_percentage$percentage
+)
+
+percentage_label <- data.frame(
+  x = 5.5,
+  y = -4,
+  text = 'нових депутатів',
+  years = '1990-1994'
 )
 
 png(filename = 'convocations.png', width = 1000, height = 900)
 
 ggplot(df_agg)+
   geom_waffle(aes(fill = as.character(counter), values = count),
-              color = 'white', size = 0.025, flip = TRUE)+
-  # geom_text(data = annotations, 
-  #           aes(x = x, y = y, label = text), 
-  #           family = 'Ubuntu Mono', color = '#5D646F')+
+              color = 'white', size = 0.025, flip = TRUE, alpha = 0.9)+
+  geom_text(data = annotations,
+            aes(x = x, y = y, label = stringr::str_wrap(text, 16)),
+            family = 'Ubuntu Mono', lineheight = 0.8,
+            vjust = 1, color = '#5D646F', size = 3.9)+
+  geom_text(data = percentage,
+            aes(x = x, y = y, label = stringr::str_wrap(paste0(text, '%'), 16)),
+            family = 'Ubuntu Mono', lineheight = 0.9,
+            vjust = 1, color = '#5D646F', size = 6)+
+  geom_text(data = percentage_label,
+            aes(x = x, y = y, label = stringr::str_wrap(text, 10)),
+            family = 'Ubuntu Mono', lineheight = 0.8,
+            vjust = 1, color = '#5D646F', size = 3.9)+
+  geom_hline(yintercept = 64.75, color = '#5D646F', size = 0.5)+
   scale_fill_manual(values = c('#7fc97f', '#eda9d0','#e48dbb','#d971a6',
                                '#cb5692','#bb3a7d','#a71d68','#8e0152'))+
-  scale_y_continuous(limits = c(0, 60), expand = c(0.01, 0.01))+
+  scale_x_continuous(expand = c(0, 0))+
+  scale_y_continuous(limits = c(-6, 65), expand = c(0.01, 0.01))+
   facet_wrap(~years, nrow = 1)+
   guides(fill = guide_legend(title = 'яке це за рахунком скликання для депутата?', 
-                             title.position = 'top',
+                             title.position = 'top', 
                              nrow = 1))+
   labs(
     title = 'Як оновлювався склад Верховної ради',
-    subtitle = 'Кожен прямокутник на графіку - це один депутат або депутатка у Верховній Раді',
+    subtitle = stringr::str_wrap('Кожен прямокутник на графіку - це один депутат або депутатка у Верховній Раді. Кількість депутатів у скликаннях не однакова, оскільки тут враховані всі люди, що були депутатами протягом певного скликання - навіть ті, що мали депутатський мандат лише кілька днів, а потім склали повноваження через призначення у Кабінеті Міністрів чи іншої причини', 100),
     caption = 'Дані: Верховна Рада України | Візуалізація: Textura.in.ua'
   )+
   theme_minimal(base_family = 'Ubuntu Mono')+
@@ -53,12 +88,14 @@ ggplot(df_agg)+
         axis.ticks = element_blank(),
         legend.position = 'top',
         legend.justification = 'left',
-        legend.title = element_text(size = 12),
+        legend.margin = margin(l = 0, b = 10),
+        legend.title = element_text(size = 13),
         legend.text = element_text(size = 12),
         plot.title = element_text(size = 36, face = 'bold', margin = margin(b = 10)),
         plot.subtitle = element_text(size = 18, margin = margin(b = 10)),
         plot.caption = element_text(size = 12, margin = margin(t = 20)),
         strip.background = element_rect(fill = '#F3F7F7', color = NA),
+        panel.spacing.x = unit(13, 'pt'),
         panel.background = element_rect(fill = '#F3F7F7', color = NA),
         plot.background = element_rect(fill = '#F3F7F7'),
         plot.margin = unit(c(1.5, 1.5, 1.5, 1.5), 'cm'))
