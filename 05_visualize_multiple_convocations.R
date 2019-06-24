@@ -1,6 +1,7 @@
 library(dplyr)
 library(ggplot2)
 library(waffle)
+source('04_find_multiple_convocations.R')
 
 convocations <- data.frame(
   convocation = c(1, 2, 3, 4, 5, 6, 7, 8),
@@ -19,9 +20,9 @@ df_agg <- df %>%
 
 df_percentage <- df_agg %>% 
   group_by(convocation) %>% 
-  mutate(mps_n = sum(count)) %>% 
+  mutate(mps_n = sum(n)) %>% 
   filter(counter == 1) %>% 
-  mutate(percentage = round(count/mps_n * 100, digits = 0))
+  mutate(percentage = round(n/mps_n * 100, digits = 0))
 
 annotations <- data.frame(
   x = 5.5,
@@ -50,7 +51,7 @@ percentage_label <- data.frame(
 png(filename = 'convocations.png', width = 1000, height = 900)
 
 ggplot(df_agg)+
-  geom_waffle(aes(fill = as.character(counter), values = count),
+  geom_waffle(aes(fill = as.character(counter), values = n),
               color = 'white', size = 0.025, flip = TRUE, alpha = 0.9)+
   geom_text(data = annotations,
             aes(x = x, y = y, label = stringr::str_wrap(text, 16)),
