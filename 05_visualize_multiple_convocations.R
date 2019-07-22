@@ -74,7 +74,7 @@ png(filename = 'convocations.png', width = 1000, height = 850)
 
 ggplot(df)+
   geom_tile(aes(x = x, y = y, fill = as.factor(counter)),
-            size = 0.1, color = '#F3F7F7', alpha = 0.7)+
+            size = 0.1, color = '#F3F7F7')+
   geom_hline(yintercept = 59, color = '#5D646F', size = 0.5)+
   geom_text(data = annotations,
             aes(x = x, y = y, label = stringr::str_wrap(text, 16)),
@@ -91,9 +91,8 @@ ggplot(df)+
   geom_curve(data = arrow, aes(x = x, y = y, xend = xend, yend = yend), 
              size = 0.5, color = '#5D646F',
              arrow = arrow(length = unit(5, 'pt')))+
-  scale_fill_manual(values = c('#94c1ae', '#eda9d0','#e48dbb','#d971a6',
+  scale_fill_manual(values = c('#a6bddb', '#eda9d0','#e48dbb','#d971a6',
                                '#cb5692','#bb3a7d','#a71d68','#8e0152'))+
-  #scale_fill_manual(values = c('#94c1ae', '#ffb6bb', '#ff6d96', '#ff2471', '#f00059', '#d1004f', '#b20044', '#93003a'))+
   scale_x_continuous(expand = c(0, 0))+
   scale_y_continuous(breaks = c(-40, 59),
                      expand = c(0.01, 0.01),
