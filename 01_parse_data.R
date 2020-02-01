@@ -5,7 +5,7 @@ parse_data <- function(){
   
   df <- data.frame()
   
-  files <- list.files('data', full.names = TRUE)
+  files <- list.files('data/raw/', full.names = TRUE)
   
   for(i in files) {
     
@@ -20,7 +20,6 @@ parse_data <- function(){
     df <- rbind.data.frame(df, x)
     
   }
-  
   
   return(df)
   
