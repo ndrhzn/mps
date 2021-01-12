@@ -12,13 +12,14 @@ convocations <- data.frame(
 )
 
 df <- parse_data() %>% 
-  select(-id, -birthday) %>% 
+  select(-id) %>% 
   inner_join(convocations) %>% 
-  mutate(start = stringr::str_extract(years, '\\d{4}'),
-         age_at_start = as.numeric(start) - year,
+  mutate(age_at_start = (time_length(difftime(date_begin, birthday), 'years')),
+         age_at_start = as.character(age_at_start),
+         age_at_start = as.numeric(substr(age_at_start, 1, 2)),
          full_name = paste(first_name, last_name)) %>% 
-  arrange(convocation, year, -gender) %>% 
+  arrange(convocation, age_at_start, -gender) %>% 
   group_by(convocation,  age_at_start) %>% 
   mutate(label = row_number()) 
 
-write.csv(df, 'data/parsed/mps.csv', row.names = F)
+write.csv(df, 'data/parsed/mps.csv', row.names = F, fileEncoding = 'UTF-8')

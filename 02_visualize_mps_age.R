@@ -27,9 +27,9 @@ annotation <- df %>%
 median_text <- data.frame(
   x = df$year %>% median(),
   y = 28.25,
-  label = 'РјРµРґС–Р°РЅР°'
+  label = 'медіана'
 )
-  
+
 png(filename = 'years.png', width = 1000, height = 600)
 
 ggplot(df)+
@@ -48,13 +48,13 @@ ggplot(df)+
   geom_text(data = median_text, aes(x = x, y = y, label = label), 
             angle = 90, nudge_x = -1,
             family = 'Ubuntu Mono', size = 4, color = '#5D646F', hjust = 'center')+
-  scale_color_brewer(palette = 7, type = 'qual', direction = 1, labels = c('С‡РѕР»РѕРІС–РєРё', 'Р¶С–РЅРєРё'))+
+  scale_color_brewer(palette = 7, type = 'qual', direction = 1, labels = c('чоловіки', 'жінки'))+
   scale_x_continuous(breaks = seq(1920, 1990, 5))+
   scale_y_continuous(breaks = c(0, seq(5, 30, 5)), limits = c(0, 30), expand = c(0.01, 0.01))+
   labs(
-    title = 'РљР»СѓР± РЅРµРјРѕР»РѕРґРёС… С‡РѕР»РѕРІС–РєС–РІ',
-    subtitle = 'Р РѕР·РїРѕРґС–Р» РґРµРїСѓС‚Р°С‚С–РІ Р’РµСЂС…РѕРІРЅРѕС— Р Р°РґРё РІРѕСЃСЊРјРѕРіРѕ СЃРєР»РёРєР°РЅРЅСЏ Р·Р° СЂРѕРєРѕРј РЅР°СЂРѕРґР¶РµРЅРЅСЏ С‚Р° СЃС‚Р°С‚С‚СЋ',
-    caption = 'Р”Р°РЅС–: Р’РµСЂС…РѕРІРЅР° Р Р°РґР° РЈРєСЂР°С—РЅРё | Р’С–Р·СѓР°Р»С–Р·Р°С†С–СЏ: Textura.in.ua'
+    title = 'Клуб немолодих чоловіків',
+    subtitle = 'Розподіл депутатів Верховної Ради восьмого скликання за роком народження та статтю',
+    caption = 'Дані: Верховна Рада України | Візуалізація: Textura.in.ua'
   )+
   theme_minimal(base_family = 'Ubuntu Mono')+
   theme(
